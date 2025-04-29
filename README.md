@@ -11,7 +11,7 @@ To be able to read the Wave file format, we have to figure out how the song is f
 
 All the information that we used for the Wave file format, we found on this webiste: [WAVE PCM soundfile format](http://soundfile.sapp.org/doc/WaveFormat/).
 
-The WAVE file format is a subset of Microsoft's RIFF specification for the storage of multimedia files.
+The WAVE format is a part of Microsoft’s RIFF(Resource Interchange File Format) standard for multimedia file storage.
 
 A RIFF file starts out with a file header followed by a sequence of data chunks. A WAVE file is often just a RIFF file with a single "WAVE" chunk which consists of two sub-chunks: a "fmt "chunk describes the sound data's format and a "data" chunk containing the actual sample data that we want to read.
 
