@@ -19,6 +19,9 @@ From the "fmt" chunk we had to extract and print certain components to figure ou
 
 **NumChannels** which would determine if it was 1 = Mono or 2 = Stereo. -> Project Settings: 2 = Stereo
 
-**SampleRate** which would determine how fast samples are taken -> Project Settings: 48000 Hz
+**SampleRate** which would determine how fast samples are taken -> Project Settings: 48,000 Hz
 
 **BitsPerSample** which would determine how many bits are in sample usually its 8 or 16 bits -> Project Settings: 16 bits
+
+**ByteRate** which is equal to SampleRate * NumChannels * BitsPerSample/8 -> Project Settings: 48000 * 2 * 16/8 = 192,000 bytes per second
+
