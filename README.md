@@ -10,6 +10,6 @@ To be able to achieve this goal, we had to download the .wav file to a Micro SD,
 ## 1. Figuring out the .wav format using Python
 To be able to read the .wav file format, we have to figure out how the song is formatted. To do this, we employed Python to print out information from the .wavfile.
 
-The "WAVE" format consists of two subchunks: "fmt " and "data". The "fmt " subchunk describes the sound data's format.< br/> While, the data is the part of the song we actually want to read. 
+The "WAVE" format consists of two subchunks: "fmt " and "data". The "fmt " subchunk describes the sound data's format.<br/> While, the data is the part of the song we actually want to read. 
 
 
