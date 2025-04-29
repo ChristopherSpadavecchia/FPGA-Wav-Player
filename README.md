@@ -7,4 +7,4 @@ The goal of our project is to be able to play a .wav file on the Nexys A7 FPGA.
 
 To be able to achieve this goal, we had to download the .wav file to a Micro SD, read the file from the Micro SD, and play back the data from the file.
 
-## Reading from the Micro SD
+## 1. Reading from the Micro SD
