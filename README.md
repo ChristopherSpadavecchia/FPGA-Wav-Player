@@ -17,19 +17,19 @@ A RIFF file starts out with a file header followed by a sequence of data chunks.
 
 From the "fmt" chunk we had to extract and print certain components to figure out the format of the song data. The componets that we used and there settings for our test song, "Again by Fetty Wap" are list below.
 
-**NumChannels** which would determine if it was 1 = Mono or 2 = Stereo. -> Project Settings: 2 = Stereo
+**NumChannels** - etermines if it was 1 = Mono or 2 = Stereo. -> Project Settings: 2 = Stereo
 
-**SampleRate** which would determine how fast samples are taken -> Project Settings: 48,000 Hz
+**SampleRate** - determines how fast samples are taken -> Project Settings: 48,000 Hz
 
-**BitsPerSample** which would determine how many bits are in sample usually its 8 or 16 bits -> Project Settings: 16 bits
+**BitsPerSample** - determines how many bits are in sample usually its 8 or 16 bits -> Project Settings: 16 bits
 
-**ByteRate** which is equal to SampleRate * NumChannels * BitsPerSample/8 -> Project Settings: 48000 * 2 * 16/8 = 192,000 bytes per second
+**ByteRate** - equal to SampleRate * NumChannels * BitsPerSample/8 -> Project Settings: 48000 * 2 * 16/8 = 192,000 bytes per second
 
 From the "data" chunk we had to extract and print certain components to see when the data started, so we could start reading the data.
 
-**Subchunk2ID** which contains the letters "data"(0x64617461 in big-endian form)
+**Subchunk2ID** - contains the letters "data"(0x64617461 in big-endian form)
 
-**Subchunk2Size** which is equal to NumSamples * NumChannels * BitsPerSample/8 and is equal to the number of bytes in the data </br> -> Project Settings: 1,400,000 samples * 2 * 16/8 = 5,600,000 bytes
+**Subchunk2Size** - equal to NumSamples * NumChannels * BitsPerSample/8 and is equal to the number of bytes in the data </br> -> Project Settings: 1,400,000 samples * 2 * 16/8 = 5,600,000 bytes
 
 We looped through the data until we found the Subchunk2ID which indicated to us that the data started here and we could start reading the data.
 
@@ -37,7 +37,24 @@ We looped through the data until we found the Subchunk2ID which indicated to us 
 
 Since the FPGA cannot store the .wav file, we had to employ a Micro SD card to be our storage.
 
-To be able to read the Micro SD card, we looked for source code to base our code off and came across this project: 
+To be able to read the Micro SD card, we looked for source code to implement and came across this project: 
 [Micro SD Reader](https://github.com/douggilliland/MultiComp/blob/master/MultiComp%20(VHDL%20Template)/Components/SDCARD/sd_controller_High_Speed.vhd).
 
+This covers the physical layer of communication between the SD Card and the FPGA.
+
+The Micro SD card has six pins with two of them being power and ground, and the other four being data pins.
+
+There are two possible options of communication: SD communication and SPI(Serial Peripherical Interface).
+
+We are using SPI because it has a simpler interface to use, however, it is slower than SD communication.
+
+SPI serializes outgoing byte data for transmission while deserializing incoming data back into bytes.
+
+The **first data pin for SPI** is for **chip selection**, which is an active low process that enables the Micro SD card. (0 = SD card activated, 1 = idle)
+
+The **second data pin for SPI** is for **serial clock**, which synchronizes data transmission between the FPGA and the Micro SD Card.
+
+The **third data pin for SPI** is for **incoming data**, which carries data from the Micro SD card to the FPGA during communication.
+
+The **fourth data pin for SPI** is for **outgoing data**, which carries data from the FPGA to the Micro SD card during communication.
 
