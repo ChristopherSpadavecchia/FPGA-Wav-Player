@@ -37,4 +37,7 @@ We looped through the data until we found the Subchunk2ID which indicated to us 
 
 Since the FPGA cannot store the .wav file, we had to employ a Micro SD card to be our storage.
 
+To be able to read the Micro SD card, we looked for source code to base our code off and came across this project: 
+[Reading from Micro SD card](https://github.com/douggilliland/MultiComp/blob/master/MultiComp%20(VHDL%20Template)/Components/SDCARD/sd_controller_High_Speed.vhd).
+
 
