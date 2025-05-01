@@ -29,6 +29,12 @@ From the "data" chunk we had to extract and print certain components to see when
 
 **Subchunk2ID** which contains the letters "data"(0x64617461 in big-endian form)
 
-**Subchunk2Size** which is equal to NumSamples * NumChannels * BitsPerSample/8 and is equal to the number of bytes in the data -> Project Settings: 1,400,000 samples * 2 * 16/8 = 5,600,000 bytes
+**Subchunk2Size** which is equal to NumSamples * NumChannels * BitsPerSample/8 and is equal to the number of bytes in the data </br> -> Project Settings: 1,400,000 samples * 2 * 16/8 = 5,600,000 bytes
 
 We looped through the data until we found the Subchunk2ID which indicated to us that the data started here and we could start reading the data.
+
+## 2. Reading the File from the Micro SD card
+
+Since the FPGA cannot store the .wav file, we had to employ a Micro SD card to be our storage.
+
+
