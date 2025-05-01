@@ -25,3 +25,10 @@ From the "fmt" chunk we had to extract and print certain components to figure ou
 
 **ByteRate** which is equal to SampleRate * NumChannels * BitsPerSample/8 -> Project Settings: 48000 * 2 * 16/8 = 192,000 bytes per second
 
+From the "data" chunk we had to extract and print certain components to see when the data started, so we could start reading the data.
+
+**Subchunk2ID** which contains the letters "data"(0x64617461 in big-endian form)
+
+**Subchunk2Size** which is equal to NumSamples * NumChannels * BitsPerSample/8 and is equal to the number of bytes in the data -> Project Settings: 1,400,000 samples * 2 * 16/8 = 5,600,000 bytes
+
+We looped through the data until we found the Subchunk2ID which indicated to us that the data started here and we could start reading the data.
