@@ -58,3 +58,10 @@ The **third data pin for SPI** is for **incoming data**, which carries data from
 
 The **fourth data pin for SPI** is for **outgoing data**, which carries data from the FPGA to the Micro SD card during communication.
 
+The code we implemented will allow us to use these data pins to send data from the Micro SD card to the FPGA.
+
+
+
+
+
+
