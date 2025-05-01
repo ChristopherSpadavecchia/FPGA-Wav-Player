@@ -60,6 +60,18 @@ The **fourth data pin for SPI** is for **outgoing data**, which carries data fro
 
 The code we implemented will allow us to use these data pins to send data from the Micro SD card to the FPGA.
 
+Now, we have to locate the file in the Micro SD card. 
+
+To locate the file, we used a Mealey finite state machine.
+
+1. The first state this finite state machine goes to is where it reads the **master boot record** that tells us the location of the file paritions on the Micro SD card. For our project, we only had one partition ) on the Micro SD Card, giving us only option for the location. This one partition is formated using the File Allocation Table 32 system or the FAT32 system for short. 
+
+2. We read the partition start sector the master boot record and use the address it gave us to find the start of the **BIOS peramater block (BPB)** This BPB contains information about the FAT32 File Systen needed to locate our file. 
+
+3. The values needed from the BPB are the sectors per cluster, resereved sectors, FAT copies, sectors per FAT, and the starting cluster.
+
+
+
 
 
 
