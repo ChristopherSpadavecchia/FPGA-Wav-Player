@@ -42,21 +42,25 @@ To be able to read the Micro SD card, we looked for source code to implement and
 
 This covers the physical layer of communication between the SD Card and the FPGA.
 
-The Micro SD card has six pins with two of them being power and ground, and the other four being data pins.
-
-There are two possible options of communication: SD communication and SPI(Serial Peripherical Interface).
+There are two possible options of communication between the SD Card and the FPGA: SD communication and SPI(Serial Peripherical Interface).
 
 We are using SPI because it has a simpler interface to use, however, it is slower than SD communication.
 
+The Micro SD card has eigh pins. SPI only uses six of the eight pins of the Micro SD card as it does not use pin 1 or 8. 
+
 SPI serializes outgoing byte data for transmission while deserializing incoming data back into bytes.
 
-The **first data pin for SPI** is for **chip selection**, which is an active low process that enables the Micro SD card. (0 = SD card activated, 1 = idle)
+**Pin 2** is for **chip selection**, which is an active low process that enables the Micro SD card. (0 = SD card activated, 1 = idle)
 
-The **second data pin for SPI** is for **serial clock**, which synchronizes data transmission between the FPGA and the Micro SD Card.
+**Pin 3** is for **incoming data**, which carries data from the Micro SD card to the FPGA during communication.
 
-The **third data pin for SPI** is for **incoming data**, which carries data from the Micro SD card to the FPGA during communication.
+**Pin 4** is for **VDD**, which carries the positive supply voltage needed to power the Micro SD card’s internal circuitry.
 
-The **fourth data pin for SPI** is for **outgoing data**, which carries data from the FPGA to the Micro SD card during communication.
+**Pin 5** is for **serial clock**, which synchronizes data transmission between the FPGA and the Micro SD Card.
+
+**Pin 6** is for **VSS**, which carries the negative supply or ground reference for the Micro SD card’s electrical circuitry.
+
+**Pin 7** is for **outgoing data**, which carries data from the FPGA to the Micro SD card during communication.
 
 The code we implemented will allow us to use these data pins to send data from the Micro SD card to the FPGA.
 
@@ -70,6 +74,8 @@ To locate the file, we used a Mealey Finite State Machine. The Mealey Finite Sta
 
 3. The values needed from the BPB are the **sectors per cluster**, **resereved sectors**, **FAT copies**, **sectors per FAT**, and the **starting cluster**.
 
-4.
+4. Next, we calculate the index first sector of the FAT in the data using the following equation: current location(first sector of the partition) + number of reserved sectors.
+
+5. 
 
 
