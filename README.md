@@ -48,6 +48,8 @@ We are using SPI because it has a simpler interface to use, however, it is slowe
 
 The Micro SD card features eight pins in total; however, when operating in SPI mode, only six of these pins are utilized, as Pins 1 and 8 are not required.
 
+![Micro SD Card Pin Diagram.](https://i.sstatic.net/dixbZ.png)
+
 **Pin 2** is for **chip selection**, which is an active low process that enables the Micro SD card. (0 = SD card activated, 1 = idle)
 
 **Pin 3** is for **incoming data**, which carries data from the Micro SD card to the FPGA during communication.
@@ -62,9 +64,7 @@ The Micro SD card features eight pins in total; however, when operating in SPI m
 
 The code we implemented will allow us to use these data pins to send data from the Micro SD card to the FPGA.
 
-Now, we have to locate the file in the Micro SD card. 
-
-To locate the file, we used a Mealey Finite State Machine. The Mealey Finite State Machine goes through the following procedure.
+Now, we have to locate the file in the Micro SD card. To locate the file, we used a Mealey Finite State Machine. The Mealey Finite State Machine goes through the following procedure.
 
 1. First, it reads the **master boot record** that tells us the location of the file paritions on the Micro SD card. For our project, we only had one partition on the Micro SD Card, giving us only option for the location. This one partition is formated using the **File Allocation Table 32 system** or the **FAT32 system** for short. 
 
