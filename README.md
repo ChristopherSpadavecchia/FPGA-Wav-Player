@@ -46,7 +46,7 @@ There are two possible options of communication between the SD Card and the FPGA
 
 We are using SPI because it has a simpler interface to use, however, it is slower than SD communication.
 
-The Micro SD card has eigh pins. SPI only uses six of the eight pins of the Micro SD card as it does not use pin 1 or 8. 
+The Micro SD card features eight pins in total; however, when operating in SPI mode, only six of these pins are utilized, as Pins 1 and 8 are not required.
 
 SPI serializes outgoing byte data for transmission while deserializing incoming data back into bytes.
 
