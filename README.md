@@ -15,6 +15,8 @@ The WAVE format is a part of Microsoft’s RIFF(Resource Interchange File Format
 
 A RIFF file starts out with a file header followed by a sequence of data chunks. A WAVE file is often just a RIFF file with a single "WAVE" chunk which consists of two sub-chunks: a "fmt "chunk which describes the sound data's format and a "data" chunk containing the actual song data that we want to read.
 
+![Wav Format](wav_format.png)
+
 From the "fmt" chunk we had to extract and print certain components to figure out the format of the song data. The componets that we used and there settings for our test song, "Again by Fetty Wap" are list below.
 
 **NumChannels** - etermines if it was 1 = Mono or 2 = Stereo. -> Project Settings: 2 = Stereo
