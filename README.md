@@ -19,7 +19,7 @@ A RIFF file starts out with a file header followed by a sequence of data chunks.
 
 From the "fmt" chunk we had to extract and print certain components to figure out the format of the song data. The components and settings that we used for our test song, "Again by Fetty Wap" are listed below.
 
-**NumChannels** - etermines if it was 1 = Mono or 2 = Stereo. -> Project Settings: 2 = Stereo
+**NumChannels** - determines if it was 1 = Mono or 2 = Stereo. -> Project Settings: 2 = Stereo
 
 **SampleRate** - determines how fast samples are taken -> Project Settings: 48,000 Hz
 
