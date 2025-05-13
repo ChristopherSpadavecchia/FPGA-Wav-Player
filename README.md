@@ -3,7 +3,28 @@ FPGA Wav Player by Christopher Spadavecchia &amp; Eli Shtindler
 
 This is our final project for CPE 487 taught by Professor Bernard Yett, shoutout to him. 
 
-The goal of our project is to be able to play a .wav file on the Nexys A7 FPGA.
+
+
+### Table of Contents:
+[Project Description](#project-description)
+
+[Usage Instructions](#how-to-run-the-project)
+
+[Project Inputs and Outputs](project-inputs-and-outputs)
+
+[Process Description](#process-description)
+
+
+## Project Description
+The goal of our project is to be able to play .wav files on the Nexys A7 FPGA. 
+
+## How to Run the Project
+1) Create a new Vivado project and add the music_player.vhd, wav_playback.vhd, sd_reader.vhd, SDCard.vhd, dac_if.vhd, and music_player.xdc files.
+2) Format a microSD card with a FAT32 filesystem
+
+## Project Inputs and Outputs
+
+## Process Description
 
 To be able to achieve this goal, we had to download the .wav file to a Micro SD, read the file from the Micro SD, and play back the data from the file.
 ## 1. Figuring out the .wav (Wave) format using Python
