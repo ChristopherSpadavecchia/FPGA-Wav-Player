@@ -16,13 +16,17 @@ This is our final project for CPE 487 taught by Professor Bernard Yett, shoutout
 
 
 ## Project Description
-The goal of our project is to be able to play .wav files on the Nexys A7 FPGA. 
+The goal of our project is to be able to play .wav files on the Nexys A7 FPGA.
 
 ## How to Run the Project
 1) Create a new Vivado project and add the Common.vhd, music_player.vhd, wav_playback.vhd, sd_reader.vhd, SDCard.vhd, dac_if.vhd, and music_player.xdc files.
-2) Format a microSD card with a FAT32 filesystem
+2) Format a microSD card with a FAT32 filesystem and upload the .wav files that you want to play.
+3) Insert the microSD card into the Nexys board.
+4) Connect a [Pmod I2S2](https://digilent.com/shop/pmod-i2s2-stereo-audio-input-and-output/) to port JA and attach your audio device to the out line.
+5) Compile the project in Vivado and upload the program the board
 
 ## Project Inputs and Outputs
+In order the drive the processes in the program, a clock signal generated the the Nexys board was used. The clock was set to a frequency of 50 MHz. Four connections were required to interact with with SD card. These are the serial clock, chip select, data in, and data out lines. The Pmod I2S2 interfacing was copied from [Lab 5](https://github.com/byett/dsd/tree/CPE487-Spring2025/Nexys-A7/Lab-5) and required another four outputs. Lastly, UART communication was used during testing to print values. This only required the UART_RXD_OUT signal.
 
 ## Process Description
 
@@ -36,7 +40,7 @@ The WAVE format is a part of Microsoft’s RIFF(Resource Interchange File Format
 
 A RIFF file starts out with a file header followed by a sequence of data chunks. A WAVE file is often just a RIFF file with a single "WAVE" chunk which consists of two sub-chunks: a "fmt "chunk which describes the sound data's format and a "data" chunk containing the actual song data that we want to read.
 
-![Wav Format](wav_format.png)
+![Wav Format](images/wav_format.png)
 
 From the "fmt" chunk we had to extract and print certain components to figure out the format of the song data. The components and settings that we used for our test song, "Again by Fetty Wap" are listed below.
 
