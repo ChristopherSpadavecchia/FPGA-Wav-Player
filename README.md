@@ -10,7 +10,7 @@ This is our final project for CPE 487 taught by Professor Bernard Yett, shoutout
 
 [Usage Instructions](#how-to-run-the-project)
 
-[Project Inputs and Outputs](project-inputs-and-outputs)
+[Project Inputs and Outputs](#project-inputs-and-outputs)
 
 [Process Description](#process-description)
 
