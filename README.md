@@ -16,22 +16,42 @@ This is our final project for CPE 487 taught by Professor Bernard Yett, shoutout
 
 
 ## Project Description
-The goal of our project is to be able to play .wav files on the Nexys A7 FPGA.
+The goal of our project was to be able to play music files on the Nexys A7-100T board. We were able to accomplish this by reading .wav files from a microSD card and playing them through a DAC interface. The program should play all of the .wav files in the root directory of the microSD cards, looping back to the start once all files have been played.
+![Block Diagram](<images/Block Diagram.png>)
 
 ## How to Run the Project
 1) Create a new Vivado project and add the Common.vhd, music_player.vhd, wav_playback.vhd, sd_reader.vhd, SDCard.vhd, dac_if.vhd, and music_player.xdc files.
-2) Format a microSD card with a FAT32 filesystem and upload the .wav files that you want to play.
-3) Insert the microSD card into the Nexys board.
-4) Connect a [Pmod I2S2](https://digilent.com/shop/pmod-i2s2-stereo-audio-input-and-output/) to port JA and attach your audio device to the out line.
-5) Compile the project in Vivado and upload the program the board
+2) Format a microSD card with a FAT32 filesystem.(The project should work with any microSD card, but was only tested with an 8 GB SDHC card)
+3) Upload the .wav files that you want to play to the card. These files must be in the main directory, not a subfolder.
+4) Insert the microSD card into the Nexys board.
+5) Connect a [Pmod I2S2](https://digilent.com/shop/pmod-i2s2-stereo-audio-input-and-output/) to port JA and attach your audio device to the out line.
+6) Compile the project in Vivado and upload the program the board
 
 ## Project Inputs and Outputs
 In order the drive the processes in the program, a clock signal generated the the Nexys board was used. The clock was set to a frequency of 50 MHz. Four connections were required to interact with with SD card. These are the serial clock, chip select, data in, and data out lines. The Pmod I2S2 interfacing was copied from [Lab 5](https://github.com/byett/dsd/tree/CPE487-Spring2025/Nexys-A7/Lab-5) and required another four outputs. Lastly, UART communication was used during testing to print values. This only required the UART_RXD_OUT signal.
 
 ## Process Description
+The development for the project was seperarated into three main stages: interfacing with the microSD card, traversing the FAT32 filesystem, and playing the wav file.
 
-To be able to achieve this goal, we had to download the .wav file to a Micro SD, read the file from the Micro SD, and play back the data from the file.
-## 1. Figuring out the .wav (Wave) format using Python
+### 1. Interfacing with a microSD card
+The Nexys A7 does not have any built in file storage, so an outside file storage device was needed. The board does have a microSD card connector, so that was chosen for storing our audio files.
+
+![Micro SD Card Pin Diagram.](https://i.sstatic.net/dixbZ.png)
+
+MicroSD cards can be interfaced in two modes: SD bus protocol and SPI. With SD bus protocol, four datalines are used that can switch between input and output, while in SPI only two data lines are used that are reserved for input and output. The protocol for SD and microSD cards are the same, with the only differencing being how the pins are arranged on the card. Luckily, working with an SD card is a common task, and many implementations were found online for SD card interfaces. [Grant Searle's SD card interface](https://github.com/douggilliland/MultiComp/blob/master/MultiComp%20(VHDL%20Template)/Components/SDCARD/sd_controller_High_Speed.vhd) was used for this project. This code handled the physical layer of interfacing with the SD card, but the logic to read from the SD card still had to be implemented. The steps to read one sector (512 bytes) are writing the three address bytes to be read from, issuing a read command, and reading in each of the 512 bytes. In between each of these steps, the SD status must be checked to make sure that the SD card has finished processing the previous command. 
+
+![SD Card Reader FSM](<images/CPE-487 File Reader FSM.png>)
+
+The above FSM was designed to perform a read from the SD card. Its implementation can be seen in sd_reader.vhd. This allows a read to be performed by simply setting the address signal and setting read signal high. In order to store the data, a new variable type called CHAR_ARRAY was created. A CHAR_ARRAY is simply an array of 8 bit std_logic_vectors, which make represent byte data easier. sd_reader outputs to a 512 byte array, which is read from in other files. The constraints needed for the SD card were found in the master constraints file and the four signals needed were added to our project.
+
+### 2. Traversing the FAT32 filesystem
+When any storage device is used, a filesystem is needed for a computer to be able to properly locate and read the files. The FAT32 format is a standard filesystem commonly used for smaller capacity storage devices such as SD cards. The FAT32 filesystem splits files up into clusters, storing the locations of the clusters as a linked list in a file allocation table (FAT). In order to read a file, you start at the first cluster obtained from a directory entry. Once you have finshed reading all sectors in the cluster, the FAT entry at the currently cluster number will have the next cluster number of the file. This continues until an end of chain indicator is reached in the FAT, which shows that the file has ended. This system allows files to be stored in non-contiguous memory, making the filesystem more adaptable.
+
+![Filesystem FSM](<images/CPE-487 Main FSM (1).png>)
+
+The above FSM was designed to perform the task of reading through the filesystem and reading through the SD card. Its implementations can be seen in music_player.vhd. The FSM first reads the Master Boot Record (MBR), which contains info on the partitions in the storage device. The first partition of the drive is always read from in our project. Then the Bios Parameter Block (BPB) is read. This contains information about the filesystem, such as the number of sectors per cluster, size of the FAT, location of the starting cluster, and more. These values are critical for successfully reading files. The program then begins going through each file entry in the main directory of the microSD card. Once a .wav file ending is found, it begins reading the file and sets the reading_file signal high, which indicates that music playback should begin. Subfolder are not traversed and any non .wav files are just skipped. Once the entire main directory is read through, the FSM re-initializes itself, looping back to the start.
+
+### 3. Figuring out the .wav (Wave) format
 To be able to read the Wave file format, we have to figure out how the song is formatted. To do this, we employed Python to extract and print out information from the .wavfile.
 
 All the information that we used for the Wave file format, we found on this webiste: [WAVE PCM soundfile format](http://soundfile.sapp.org/doc/WaveFormat/).
@@ -60,47 +80,5 @@ From the "data" chunk we had to extract and print certain components to see when
 
 We looped through the data until we found the Subchunk2ID which indicated to us that the data started here and we could start reading the data.
 
-## 2. Reading the File from the Micro SD card
-
-Since the FPGA cannot store the .wav file, we had to employ a Micro SD card to be our storage.
-
-To be able to read the Micro SD card, we looked for source code to implement and came across this project: 
-[Micro SD Reader](https://github.com/douggilliland/MultiComp/blob/master/MultiComp%20(VHDL%20Template)/Components/SDCARD/sd_controller_High_Speed.vhd).
-
-This covers the physical layer of communication between the SD Card and the FPGA.
-
-There are two possible options of communication between the SD Card and the FPGA: SD communication and SPI(Serial Peripherical Interface).
-
-We are using SPI because it has a simpler interface to use, however, it is slower than SD communication. SPI serializes outgoing byte data for transmission while deserializing incoming data back into bytes.
-
-The Micro SD card features eight pins in total; however, when operating in SPI mode, only six of these pins are utilized, as Pins 1 and 8 are not required.
-
-![Micro SD Card Pin Diagram.](https://i.sstatic.net/dixbZ.png)
-
-**Pin 2** is for **chip selection**, which is an active low process that enables the Micro SD card. (0 = SD card activated, 1 = idle)
-
-**Pin 3** is for **incoming data**, which carries data from the Micro SD card to the FPGA during communication.
-
-**Pin 4** is for **VDD**, which carries the positive supply voltage needed to power the Micro SD card’s internal circuitry.
-
-**Pin 5** is for **serial clock**, which synchronizes data transmission between the FPGA and the Micro SD Card.
-
-**Pin 6** is for **VSS**, which carries the negative supply or ground reference for the Micro SD card’s electrical circuitry.
-
-**Pin 7** is for **outgoing data**, which carries data from the FPGA to the Micro SD card during communication.
-
-The code we implemented will allow us to use these data pins to send data from the Micro SD card to the FPGA.
-
-Now, we have to locate the file in the Micro SD card. To locate the file, we used a Mealey Finite State Machine. The Mealey Finite State Machine goes through the following procedure.
-
-1. First, it reads the **master boot record** that tells us the location of the file paritions on the Micro SD card. For our project, we only had one partition on the Micro SD Card, giving us only option for the location. This one partition is formated using the **File Allocation Table 32 system** or the **FAT32 system** for short. 
-
-2. We read the partition start sector the master boot record and use the address it gave us to find the start of the **BIOS peramater block (BPB)** This BPB contains information about the FAT32 File Systen needed to locate our file. 
-
-3. The values needed from the BPB are the **sectors per cluster**, **resereved sectors**, **FAT copies**, **sectors per FAT**, and the **starting cluster**.
-
-4. Next, we calculate the index first sector of the FAT in the data using the following equation: current location(first sector of the partition) + number of reserved sectors.
-
-5. 
 
 
