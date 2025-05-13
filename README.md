@@ -19,7 +19,7 @@ This is our final project for CPE 487 taught by Professor Bernard Yett, shoutout
 The goal of our project is to be able to play .wav files on the Nexys A7 FPGA. 
 
 ## How to Run the Project
-1) Create a new Vivado project and add the music_player.vhd, wav_playback.vhd, sd_reader.vhd, SDCard.vhd, dac_if.vhd, and music_player.xdc files.
+1) Create a new Vivado project and add the Common.vhd, music_player.vhd, wav_playback.vhd, sd_reader.vhd, SDCard.vhd, dac_if.vhd, and music_player.xdc files.
 2) Format a microSD card with a FAT32 filesystem
 
 ## Project Inputs and Outputs
