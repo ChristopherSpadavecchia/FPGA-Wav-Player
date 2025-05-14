@@ -96,6 +96,8 @@ A large amount of the time spent on this project was learning about the format s
 
 ## Conclusion
 
+# Summary
 This project successfully demonstrated the ability to play WAV audio files on the Nexys A7-100T FPGA by interfacing with a microSD card using the SPI protocol, navigating a FAT32 filesystem, and decoding WAV format audio for playback through a Pmod I2S2 DAC. Key components included custom VHDL implementations for SD card communication, filesystem traversal, and WAV data parsing and playback. Overcoming challenges such as debugging without immediate feedback, handling timing issues, and understanding complex file standards like FAT32 and WAV required extensive research and creative problem-solving. Tools like Python, UART, and HxD were instrumental in developing and verifying each stage of the project. Ultimately, this project highlights the power and flexibility of FPGAs for real-time multimedia processing and provided valuable hands-on experience with hardware-software integration, digital communication protocols, and embedded system design.
 
-Eli didn't do shit
+
+
