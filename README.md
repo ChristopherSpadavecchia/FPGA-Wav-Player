@@ -16,6 +16,7 @@ This is our final project for CPE 487 taught by Professor Bernard Yett, shoutout
 
 [Difficulties](#difficulties)
 
+[Conclusion](#conclusion)
 
 ## Project Description
 The goal of our project was to be able to play music files on the Nexys A7-100T board. We were able to accomplish this by reading WAV files from a microSD card and playing them through a DAC interface. The program should play all of the WAV files in the root directory of the microSD cards, looping back to the start once all files have been played.
@@ -28,6 +29,10 @@ The goal of our project was to be able to play music files on the Nexys A7-100T 
 4) Insert the microSD card into the Nexys board.
 5) Connect a [Pmod I2S2](https://digilent.com/shop/pmod-i2s2-stereo-audio-input-and-output/) to port JA and attach your audio device to the out line.
 6) Compile the project in Vivado and upload the program the board
+
+## Project Demo
+
+[Watch the Demo Video Here](https://drive.google.com/file/d/1YBpfF34yanek0S-7Yh6ucQBbaSbq5IQK/view?usp=sharing)
 
 ## Project Inputs and Outputs
 In order the drive the processes in the program, a clock signal generated the the Nexys board was used. The clock was set to a frequency of 50 MHz. Four connections were required to interact with with SD card. These are the serial clock, chip select, data in, and data out lines. The Pmod I2S2 interfacing was copied from [Lab 5](https://github.com/byett/dsd/tree/CPE487-Spring2025/Nexys-A7/Lab-5) and required another four outputs. Lastly, UART communication was used during testing to print values. This only required the UART_RXD_OUT signal.
