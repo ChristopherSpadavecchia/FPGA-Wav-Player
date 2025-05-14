@@ -81,7 +81,7 @@ From the "data" chunk we had to extract and print certain components to see when
 
 **Subchunk2Size** - equal to NumSamples * NumChannels * BitsPerSample/8 and is equal to the number of bytes in the data </br> -> Project Settings: 1,400,000 samples * 2 * 16/8 = 5,600,000 bytes
 
-![WAV Playback FSM](<images/CPE-487 WAV Playback FSM (1).png>)
+![WAV Playback FSM](<images/CPE-487 WAV Playback FSM.png>)
 
 After the reading the fmt subchunk, the WAV playback FSM checks the next subchunks. If they are not a data subchunk, they are skipped and the next subchunk is read until the data subchunk is found. In order to play the data back a the correct speed, the FSM was synced to a counter. This counter incremented by the sample rate each clock cycle and was reset when it surpassed the clock speed * number of channels. On each reset of this counter, the FSM would read a new sample, ensuring that the playback speed matched to the data contained in the WAV file.
 
