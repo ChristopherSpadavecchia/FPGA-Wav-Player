@@ -101,9 +101,7 @@ This project successfully demonstrated the ability to play WAV audio files on th
 
 ### Contributions
 
-Chris was responsible for developing the initial stages of the project, including interfacing with the microSD card using the SPI protocol, implementing the SD card reader FSM, and decoding the WAV file format for playback.
-
-Eli focused on traversing the FAT32 filesystem, managing file selection and playback sequencing, and developing the FSM for WAV data output synchronized with the audio sample rate.
-
+**Chris** was responsible for developing the initial stages of the project, including interfacing with the microSD card using the SPI protocol, implementing the SD card reader FSM, and decoding the WAV file format for playback.
+**Eli** focused on traversing the FAT32 filesystem, managing file selection and playback sequencing, and developing the FSM for WAV data output synchronized with the audio sample rate.
 Both team members collaborated on integrating the system components, testing the design, debugging timing issues, and preparing documentation for the final submission.
 
